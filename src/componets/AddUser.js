@@ -1,29 +1,25 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 
 function Users() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [users, setUsers] = useState([]);
+ 
 
-  // Fetch users
   const fetchUsers = async () => {
-    const res = await axios.get("REACT_APP_API_URL/api/user");
+    const res = await api.get("/api/user");
     setUsers(res.data);
   };
 
-  // Add user
   const addUser = async (e) => {
     e.preventDefault();
 
-    await axios.post("REACT_APP_API_URL/api/user", {
-      username,
-      email
-    });
+    await api.post("/api/user", { username, email });
 
     setUsername("");
     setEmail("");
-    fetchUsers(); // refresh list
+    fetchUsers();
   };
 
   useEffect(() => {
