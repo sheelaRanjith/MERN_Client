@@ -7,10 +7,22 @@ function Users() {
   const [users, setUsers] = useState([]);
  
 
-  const fetchUsers = async () => {
+ const fetchUsers = async () => {
+  try {
     const res = await api.get("/api/user");
-    setUsers(res.data);
-  };
+
+    if (Array.isArray(res.data)) {
+      setUsers(res.data);
+    } else {
+      console.error("Unexpected response:", res.data);
+      setUsers([]); // 🔐 safety
+    }
+  } catch (error) {
+    console.error("Fetch error:", error.message);
+    setUsers([]); // 🔐 safety
+  }
+};
+
 
   const addUser = async (e) => {
     e.preventDefault();
